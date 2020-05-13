@@ -14,7 +14,23 @@ const formSchema = yup.object().shape({
 });
 
 function Form(props) {
-    
+   const [users, setUsers] = useState({
+       name: "",
+       email: "",
+       password: "",
+       terms: false
+   });
+   
+   const changeHandler = e => {
+       setUsers({...users, [e.target.name]: e.target.value});
+       console.log(users);
+   };
+
+   const submitForm = e => {
+       e.preventDefault();
+       props.addUser(users);
+       setUsers({name:"", email:"", password:"", terms:false})
+   }
 
   const [formState, setFormState] = useState({
     name: "",
