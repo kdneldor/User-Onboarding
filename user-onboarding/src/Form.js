@@ -14,24 +14,7 @@ const formSchema = yup.object().shape({
 });
 
 function Form(props) {
-   const [users, setUsers] = useState({
-       name: "",
-       email: "",
-       password: "",
-       terms: false
-   });
-   
-   const changeHandler = e => {
-       setUsers({...users, [e.target.name]: e.target.value});
-       console.log(users);
-   };
-
-   const submitForm = e => {
-       e.preventDefault();
-       props.addUser(users);
-       setUsers({name:"", email:"", password:"", terms:false})
-   }
-
+  
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -50,7 +33,7 @@ function Form(props) {
     yup
       .reach(formSchema, e.target.name)
       .validate(e.target.value)
-      .then(valid => {
+      .then((valid) => {
         setErrorState({
           ...errorState,
           [e.target.name]: "",
@@ -78,7 +61,10 @@ function Form(props) {
     console.log("Form Submitted!");
     axios
       .post("https://reqres.in/api/users", formState)
-      .then((response) => console.log(response))
+      .then((response) => {
+        console.log(props.addUser);
+        props.addUser(response.data);
+      })
       .catch((err) => console.log(err));
   };
 
@@ -131,6 +117,7 @@ function Form(props) {
         Terms and Conditions
       </label>
       <button className="form-button">Submit</button>
+      <pre>{JSON.stringify(props.formUsers, null, 2)}</pre>
     </form>
   );
 }
