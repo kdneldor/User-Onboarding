@@ -19,7 +19,7 @@ function Form(props) {
     name: "",
     email: "",
     password: "",
-    terms: false,
+    terms: "",
   });
 
   const [errorState, setErrorState] = useState({
@@ -51,9 +51,10 @@ function Form(props) {
   const inputChange = (e) => {
     e.persist();
     validate(e);
-    let value =
-      e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    setFormState({ ...formState, [e.target.name]: value });
+    // let value =
+      
+    setFormState({ ...formState, [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value });
+    console.log()
   };
 
   const formSubmit = (e) => {
@@ -62,8 +63,8 @@ function Form(props) {
     axios
       .post("https://reqres.in/api/users", formState)
       .then((response) => {
-        console.log(props.addUser);
-        props.addUser(response.data);
+        console.log(formState);
+        setFormState(response.data);
       })
       .catch((err) => console.log(err));
   };
@@ -117,7 +118,7 @@ function Form(props) {
         Terms and Conditions
       </label>
       <button className="form-button">Submit</button>
-      <pre>{JSON.stringify(props.formUsers, null, 2)}</pre>
+      <pre>{JSON.stringify(formState, null, 2)}</pre>
     </form>
   );
 }
